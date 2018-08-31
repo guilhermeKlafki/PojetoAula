@@ -30,6 +30,7 @@ public class ViewLogin extends javax.swing.JFrame {
      */
     public ViewLogin() {
         initComponents();
+        this.getContentPane().setBackground(Color.WHITE);
     }
 
     /**
