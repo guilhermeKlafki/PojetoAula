@@ -16,12 +16,15 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Windows
+ * @author jonas
  */
 public class ConnectionFactory {
     
     private final static String DRIVER = "org.postgresql.Driver";
-    private final static String URL = "jdbc:postgresql://localhost/univates";
+    //Univates
+    // private final static String URL = "jdbc:postgresql://localhost:5432/univates";
+    //Em Casa
+    private final static String URL = "jdbc:postgresql://localhost:5433/univates";
     private final static String USER = "postgres";
     private final static String PASS = "postgres";
     
@@ -32,7 +35,7 @@ public class ConnectionFactory {
          try {
             Connection con = getConnection();
             stmt = con.createStatement();
-            System.out.print("Conexão com Banco de Dados Criada!\n");
+            System.out.print("Conexão com Banco de Dados Criada!");
         } catch (Exception e) {
             System.out.print(e);
         }
@@ -55,7 +58,6 @@ public class ConnectionFactory {
             
             if(con != null){
                 con.close();
-                System.out.println("Fechou conexão");
             }
             
         }catch(SQLException ex){
@@ -93,4 +95,9 @@ public class ConnectionFactory {
             Logger.getLogger(ConnectionFactory.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public static void closeConnecion(Connection con, PreparedStatement stmt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }

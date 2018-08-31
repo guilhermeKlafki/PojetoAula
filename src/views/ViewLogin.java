@@ -5,9 +5,6 @@
  */
 package views;
 
-import Connection.ConnectionFactory;
-import static Connection.ConnectionFactory.con;
-import controle.UsuarioDao;
 import ferramentas.CaixaDeDialogo;
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -18,7 +15,9 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import modelo.Usuario;
+import Connection.*;
+import controller.LoginController;
+import model.Usuario;
 
 /**
  *
@@ -31,9 +30,6 @@ public class ViewLogin extends javax.swing.JFrame {
      */
     public ViewLogin() {
         initComponents();
-        this.getContentPane().setBackground(Color.WHITE);
-       // this.setExtendedState(MAXIMIZED_BOTH);
-        checkOnOff();
     }
 
     /**
@@ -88,11 +84,6 @@ public class ViewLogin extends javax.swing.JFrame {
         btnCadastrar.setForeground(new java.awt.Color(255, 255, 255));
         btnCadastrar.setText("Cadastrar-se");
         btnCadastrar.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCadastrarActionPerformed(evt);
-            }
-        });
 
         jPanel6.setBackground(new java.awt.Color(0, 102, 255));
 
@@ -182,33 +173,27 @@ public class ViewLogin extends javax.swing.JFrame {
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
         // TODO add your handling code here:
-        String senha = new String(txtSenha.getPassword());
-        String login = txtLogin.getText();
+        //String senha = new String(txtSenha.getPassword());
+        //String login = txtLogin.getText();
         
-          if ((login.equals("")) && (senha.equals(""))) {
-             CaixaDeDialogo.obterinstancia().exibirMensagem("Por favor, preencha os campos corretamente!", "Erro", 'e');
+        if (txtLogin.getText().equals("") && txtSenha.getText().toString().equals("")) {
+             CaixaDeDialogo.obterinstancia().exibirMensagem("Dados inválidos", "Erro", 'e');
+             return;
+        }
+     
+         LoginController login = new LoginController();
+         Usuario user = login.Login(txtLogin.getText().trim(), txtSenha.getText().toString());
+         
+            if (user == null) {
+             CaixaDeDialogo.obterinstancia().exibirMensagem("Este usuário não existe no sistema!", "Erro", 'e');
              return;   
-           }
-        
-            boolean resposta = UsuarioDao.buscarUsuario(login,senha); 
-            System.out.println(resposta);
-        
-            if (resposta == true){
-             //JOptionPane.showMessageDialog(rootPane, "Login realizado com sucesso!");
-             TelaPrincipal t = new TelaPrincipal();
-             t.setVisible(true);
-             this.setVisible(false);
-
-            }else {
-            CaixaDeDialogo.obterinstancia().exibirMensagem("Usuário ou Senha inválidos!", "Atenção", 'a');
-            return;
+           } else {
+                TelaPrincipal tela = new TelaPrincipal();
+                tela.setVisible(true);
+                this.setVisible(false);   
             }
-                  
+         
     }//GEN-LAST:event_btnEntrarActionPerformed
-
-    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void lblCapsLookKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lblCapsLookKeyPressed
         // TODO add your handling code here:
@@ -249,32 +234,6 @@ public class ViewLogin extends javax.swing.JFrame {
             }
         });
     }
-    
-
-    public void checkOnOff() {
-        Thread th = new Thread() {
-        public void run() {
-            for (;;) {
-                if (Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK)) {
-                    lblCapsLook.setForeground(Color.GREEN);
-                    lblCapsLook.setText("Caps Look Ligado");
-                } else {
-                    lblCapsLook.setText(null);
-                }
-                try {
-                    sleep(100);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(ViewLogin.class.getName()).log(Level.SEVERE, null, ex);
-                }                    
-            }
-        }
-    };th.start();
-}
-
-
-            
-            
-
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
