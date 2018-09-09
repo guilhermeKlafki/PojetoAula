@@ -36,7 +36,7 @@
                       <Component id="btnEntrar" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="lblSenha" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtLogin" alignment="0" min="-2" pref="236" max="-2" attributes="0"/>
+                  <Component id="txtUsuario" alignment="0" min="-2" pref="236" max="-2" attributes="0"/>
                   <Component id="lblLogin" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -50,7 +50,7 @@
               <EmptySpace min="-2" pref="122" max="-2" attributes="0"/>
               <Component id="lblLogin" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="txtLogin" min="-2" pref="30" max="-2" attributes="0"/>
+              <Component id="txtUsuario" min="-2" pref="30" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="lblSenha" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -76,7 +76,7 @@
         <Property name="text" type="java.lang.String" value="Login"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtLogin">
+    <Component class="javax.swing.JTextField" name="txtUsuario">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value="Digite seu usu&#xe1;rio"/>
       </Properties>
