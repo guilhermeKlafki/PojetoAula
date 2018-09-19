@@ -13,25 +13,27 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import model.Aluno;
 import Connection.ConnectionFactory;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import model.Usuario;
 
 /**
  *
  * @author jonasdhein
  */
-public class AlunoController {
+public class UsuarioController {
     
-    Aluno objAluno;
-    JTable jtbAlunos = null;
+    Usuario objUsuario;
+    JTable jtbUsuarios = null;
     
-    public AlunoController(Aluno objAluno, JTable jtbAlunos) {
-        this.objAluno = objAluno;
-        this.jtbAlunos = jtbAlunos;
+    public UsuarioController(Usuario objUsuario, JTable jtbUsuarios) {
+        this.objUsuario = objUsuario;
+        this.jtbUsuarios = jtbUsuarios;
     }
     
-    public void PreencheAlunos() {
+    public void PreencheUsuarios() {
 
         try{
             
@@ -39,25 +41,24 @@ public class AlunoController {
         
         Vector<String> cabecalhos = new Vector<String>();
         Vector dadosTabela = new Vector();
-        cabecalhos.add("Matricula");
-        cabecalhos.add("Curso");
+        cabecalhos.add("Login");
         cabecalhos.add("Nome");
+        cabecalhos.add("Senha");
         
         ResultSet result = null;
         
         try {
 
             String SQL = "";
-            SQL = " SELECT mat_alu, c.nom_curso, nom_alu ";
-            SQL += " FROM alunos a, cursos c ";
-            SQL += " WHERE a.cod_curso = c.cod_curso ";
-            SQL += " ORDER BY nom_alu ";
+            SQL = " SELECT u.login, u.nome, u.senha ";
+            SQL += " FROM usuarios u";           
+            SQL += " ORDER BY u.nome ";
             
             result = ConnectionFactory.stmt.executeQuery(SQL);
 
             while (result.next()) {
                 Vector<Object> linha = new Vector<Object>();
-                linha.add(result.getInt(1));
+                linha.add(result.getString(1));
                 linha.add(result.getString(2));
                 linha.add(result.getString(3));
                 dadosTabela.add(linha);
@@ -68,7 +69,7 @@ public class AlunoController {
             System.out.println(e);
         }
 
-        jtbAlunos.setModel(new DefaultTableModel(dadosTabela, cabecalhos) {
+        jtbUsuarios.setModel(new DefaultTableModel(dadosTabela, cabecalhos) {
 
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -79,12 +80,12 @@ public class AlunoController {
 
 
         // permite seleção de apenas uma linha da tabela
-        jtbAlunos.setSelectionMode(0);
+        jtbUsuarios.setSelectionMode(0);
 
         // redimensiona as colunas de uma tabela
         TableColumn column = null;
         for (int i = 0; i < 3; i++) {
-            column = jtbAlunos.getColumnModel().getColumn(i);
+            column = jtbUsuarios.getColumnModel().getColumn(i);
             switch (i) {
                 case 0:
                     column.setPreferredWidth(80);
@@ -98,7 +99,7 @@ public class AlunoController {
             }
         }
         
-        jtbAlunos.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+        jtbUsuarios.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
 
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -121,46 +122,36 @@ public class AlunoController {
         }
     }
     
-     public Aluno buscar(String coluna1) {
+  
+    
+        
+        public boolean incluir(Usuario objUsuario){
+        
+        ConnectionFactory.abreConexao();
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+       
         try {
-            ConnectionFactory.abreConexao();
-            ResultSet rs = null;
             
-            String SQL = "";
-            SQL = " SELECT mat_alu, nom_alu, email, cod_curso ";
-            SQL += " FROM alunos";
-            SQL += " WHERE mat_alu = '" + coluna1 + "'";
-
-            try{
-                System.out.println("Vai Executar Conexão em buscar Aluno");
-                rs = ConnectionFactory.stmt.executeQuery(SQL);
-                System.out.println("Executou Conexão em buscar Aluno");
-
-                objAluno= new Aluno();
-                
-                    if(rs.next() == true)
-                {
-                    objAluno.setMat_aluno(rs.getInt(1));
-                    objAluno.setNom_aluno(rs.getString(2));
-                    objAluno.setEmail(rs.getString(3));
-                    objAluno.setCod_curso(rs.getInt(4));
-                    
-                }
-            }
-
-            catch (SQLException ex )
-            {
-                System.out.println("ERRO de SQL: " + ex.getMessage().toString());
-                return null;
-            }
-
-        } catch (Exception e) {
-            System.out.println("ERRO: " + e.getMessage().toString());
-            return null;
+            stmt = con.prepareStatement("INSERT INTO usuarios (login, nome, senha)VALUES(?,?,?)");
+            stmt.setString(1, objUsuario.getLogin());
+            stmt.setString(2, objUsuario.getNome());
+            stmt.setString(3, objUsuario.getSenha());
+            
+            stmt.executeUpdate();
+            
+            return true;
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt);
         }
         
-        System.out.println ("Executou buscar Aluno com sucesso");
-        return objAluno;
-    }
     
+    }
+            
+
+
 }

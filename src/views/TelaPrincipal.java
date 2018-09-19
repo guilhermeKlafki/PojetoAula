@@ -34,6 +34,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuAlunos = new javax.swing.JMenuItem();
+        menuUsuarios = new javax.swing.JMenuItem();
         menuProfessores = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
@@ -49,6 +50,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu1.add(menuAlunos);
+
+        menuUsuarios.setText("Usuaros");
+        menuUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuUsuariosActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuUsuarios);
 
         menuProfessores.setText("Professores");
         menuProfessores.addActionListener(new java.awt.event.ActionListener() {
@@ -82,11 +91,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void menuAlunosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAlunosActionPerformed
         // TODO add your handling code here:
+        AlunosView alunos = new AlunosView();
+        alunos.setVisible(true);
     }//GEN-LAST:event_menuAlunosActionPerformed
 
     private void menuProfessoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProfessoresActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuProfessoresActionPerformed
+
+    private void menuUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuUsuariosActionPerformed
+        // TODO add your handling code here:
+        UsuariosView usuarios = new UsuariosView();
+        usuarios.setVisible(true);
+    }//GEN-LAST:event_menuUsuariosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -129,5 +146,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem menuAlunos;
     private javax.swing.JMenuItem menuProfessores;
+    private javax.swing.JMenuItem menuUsuarios;
     // End of variables declaration//GEN-END:variables
 }

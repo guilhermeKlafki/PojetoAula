@@ -171,7 +171,8 @@ public class LoginView extends javax.swing.JFrame {
      
          LoginController login = new LoginController();
          String usuario = txtUsuario.getText().trim();
-         String senha = txtSenha.getPassword().toString();
+         
+         String senha = new String(this. txtSenha.getPassword());
                  
          Usuario user = login.Login(usuario, senha);
          

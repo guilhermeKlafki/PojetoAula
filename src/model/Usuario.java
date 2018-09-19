@@ -13,6 +13,16 @@ public class Usuario {
     
     private String nome;
     private String login;
+    private String senha;
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+    
 
     public String getNome() {
         return nome;
