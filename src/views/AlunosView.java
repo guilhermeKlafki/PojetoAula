@@ -216,16 +216,13 @@ public class AlunosView extends javax.swing.JFrame {
         
         AlunoController alunoCon = new AlunoController(objAluno, null);
         
-        objAluno.setLogin(txtLogin.getText());
-        objAluno.setNome(txtNome.getText());
-        objAluno.setSenha(txtSenha.getText());
-        userCon.incluir(objUsuario);
-        atualizaUsuario();
         
-        
-        Aluno objAluno = new Aluno();
-        objAluno.setMat_aluno(txtMatricula.getText());
-        objAluno.setCod_curso(objComboCurso.getCodigo());
+        objAluno.setNom_aluno(txtNome.getText());
+        objAluno.setDat_nasc(txtData.getText().toString());
+        objAluno.setEmail(txtEmail.getText());
+        alunoCon.incluir(objAluno);
+        //atualizaUsuario();
+              
         
     }//GEN-LAST:event_jButton1ActionPerformed
 

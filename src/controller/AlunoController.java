@@ -15,7 +15,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import model.Aluno;
 import Connection.ConnectionFactory;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import model.Usuario;
 
 /**
  *
@@ -161,6 +164,33 @@ public class AlunoController {
         
         System.out.println ("Executou buscar Aluno com sucesso");
         return objAluno;
+    }
+     
+     public boolean incluirAluno(Aluno objAluno){
+        
+        ConnectionFactory.abreConexao();
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+       
+        try {
+            
+            stmt = con.prepareStatement("INSERT INTO aluno (dat_nasc, nom_alu, email)VALUES(?,?,?)");
+            stmt.setString(1, objAluno.getDat_nasc());
+            stmt.setString(2, objAluno.getNom_aluno());
+            stmt.setString(3, objAluno.getEmail());
+            
+            stmt.executeUpdate();
+            
+            return true;
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+        
+    
     }
     
 }
