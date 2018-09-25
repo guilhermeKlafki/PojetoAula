@@ -192,5 +192,33 @@ public class AlunoController {
         
     
     }
+     
+     public boolean alterar(){
+ 
+    ConnectionFactory.abreConexao();
+    Connection con = ConnectionFactory.getConnection();
+    PreparedStatement stmt = null;
+ 
+    try {
+ stmt = con.prepareStatement("UPDATE alunos SET nom_alu=?, email=?, WHERE mat_alu=?");
+ stmt.setString(1, objAluno.getNom_aluno());
+ stmt.setString(2, objAluno.getEmail());
+ stmt.setInt(3, objAluno.getMat_aluno());
+ 
+ stmt.executeUpdate();
+ 
+ return true;
+ 
+ } catch (SQLException ex) {
+ System.out.println(ex.getMessage());
+ return false;
+ }finally{
+ ConnectionFactory.closeConnection(con, stmt);
+ }
+ 
+ }
     
 }
+
+
+
