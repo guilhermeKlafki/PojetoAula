@@ -7,6 +7,7 @@ package views;
 
 import controller.AlunoController;
 import controller.UsuarioController;
+import ferramentas.CaixaDeDialogo;
 import ferramentas.Combos;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -22,13 +23,14 @@ public class AlunosView extends javax.swing.JFrame {
 
     //Declaração do componente
     Combos objComboCurso;
+    Aluno objAluno;
     
     /**
      * Creates new form AlunosView
      */
     public AlunosView() {
         initComponents();
-        
+                
         //Carregar os cursos existentes
         
         //Preenchimento com dados do banco
@@ -66,9 +68,11 @@ public class AlunosView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jtbAlunos = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnIncluir = new javax.swing.JButton();
         lblData = new javax.swing.JLabel();
         txtData = new javax.swing.JFormattedTextField();
+        btnAlterar = new javax.swing.JButton();
+        btnDeletar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -104,16 +108,30 @@ public class AlunosView extends javax.swing.JFrame {
 
         jLabel4.setText("Lista dos alunos já cadastrados");
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnIncluir.setText("INCLUIR");
+        btnIncluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnIncluirActionPerformed(evt);
             }
         });
 
         lblData.setText("Data");
 
         txtData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+
+        btnAlterar.setText("ALTERAR");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
+
+        btnDeletar.setText("DELETAR");
+        btnDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeletarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -142,9 +160,14 @@ public class AlunosView extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblData)
                             .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnIncluir)
+                                .addGap(43, 43, 43)
+                                .addComponent(btnAlterar)
+                                .addGap(49, 49, 49)
+                                .addComponent(btnDeletar))
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 265, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,15 +185,18 @@ public class AlunosView extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jcbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jcbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(lblData)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnIncluir)
+                    .addComponent(btnAlterar)
+                    .addComponent(btnDeletar))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -209,22 +235,54 @@ public class AlunosView extends javax.swing.JFrame {
    //basta agora chamar o método buscar, passando o COLUNA1 como parâmetro de consulta
     }//GEN-LAST:event_jtbAlunosMouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
         // TODO add your handling code here:
         
-        Aluno objAluno = new Aluno();
+       objAluno = new Aluno();
         
         AlunoController alunoCon = new AlunoController(objAluno, null);
         
         
         objAluno.setNom_aluno(txtNome.getText());
-        objAluno.setDat_nasc(txtData.getText().toString());
+        
+        //objAluno.setDat_nasc(txtData.getText().toString());
         objAluno.setEmail(txtEmail.getText());
-        alunoCon.incluir(objAluno);
+        alunoCon.incluirAluno(objAluno);
         //atualizaUsuario();
               
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnIncluirActionPerformed
+        
+    private void guardarDados() {
+        try {
+            objAluno = new Aluno();
+            objAluno.setMat_aluno(Integer.parseInt(txtMatricula.getText()));
+            objAluno.setNom_aluno(txtNome.getText());
+            objAluno.setEmail(txtEmail.getText());
+
+            //AJUSTA A DATA PARA ANO-MES-DIA PARA GRAVAR NO BANCO
+            String dataFormatada = Formatacao.ajustaDataAMD(txtData.getText());
+            objAluno.setDat_nasc(dataFormatada);
+            
+            //RECUPERANDO O CODIGO DO CURSO DO JCOMBOBOX
+            Combos c = (Combos) jcbCursos.getSelectedItem();
+            String codigoCurso = c.getCodigo();
+            objAluno.setCod_curso(Integer.parseInt(codigoCurso));
+
+        }catch(Exception ex){
+            CaixaDeDialogo.obterinstancia().exibirMensagem("Problemas no guardaDados: " + ex.getMessage());
+        }
+    }
+    
+    
+    
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDeletarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -262,7 +320,9 @@ public class AlunosView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnDeletar;
+    private javax.swing.JButton btnIncluir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

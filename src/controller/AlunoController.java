@@ -174,8 +174,9 @@ public class AlunoController {
        
         try {
             
-            stmt = con.prepareStatement("INSERT INTO aluno (dat_nasc, nom_alu, email)VALUES(?,?,?)");
-            stmt.setString(1, objAluno.getDat_nasc());
+            stmt = con.prepareStatement("INSERT INTO alunos (mat_alu, cod_curso, nom_alu, email, dat_nasc)VALUES(?,?,?,?)");
+            
+            stmt.setInt(1, objAluno.getMat_aluno());
             stmt.setString(2, objAluno.getNom_aluno());
             stmt.setString(3, objAluno.getEmail());
             
@@ -198,12 +199,15 @@ public class AlunoController {
     ConnectionFactory.abreConexao();
     Connection con = ConnectionFactory.getConnection();
     PreparedStatement stmt = null;
- 
+        
+        matricula email nome e data 
+    
     try {
  stmt = con.prepareStatement("UPDATE alunos SET nom_alu=?, email=?, WHERE mat_alu=?");
- stmt.setString(1, objAluno.getNom_aluno());
- stmt.setString(2, objAluno.getEmail());
- stmt.setInt(3, objAluno.getMat_aluno());
+ stmt.setInt(1, objAluno.getMat_aluno());
+ stmt.setString(2, objAluno.getNom_aluno());
+ stmt.setString(3, objAluno.getEmail());
+ 
  
  stmt.executeUpdate();
  
